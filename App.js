@@ -1,6 +1,5 @@
 import { StyleSheet, View, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import RegistrationScreen from './Screens/RegistrationScreen';
-import { useState } from 'react';
 // import LoginScreen from './Screens/LoginScreen';
 
 export default function App() {
