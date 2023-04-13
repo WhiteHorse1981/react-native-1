@@ -8,9 +8,9 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Image,
   TouchableWithoutFeedback,
   ImageBackground,
+  ScrollView,
 } from 'react-native';
 
 initialState = {
@@ -18,12 +18,13 @@ initialState = {
   password: '',
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState(false);
 
   const keyBoardHideBtn = () => {
+    navigation.navigate('Home');
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
     console.log(state);
@@ -36,10 +37,7 @@ const LoginScreen = () => {
           <View style={{ ...styles.form, marginBottom: isShowKeyBoard ? 0 : 0 }}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
               <View style={styles.containerForm}>
-                <View style={styles.photo}>
-                  <Image style={styles.photoAdd} source={require('../assets/images/add.png')} />
-                </View>
-                <Text style={styles.formTitle}>To come in</Text>
+                <Text style={styles.formTitle}>Login</Text>
                 <TextInput
                   onFocus={() => setIsShowKeyBoard(true)}
                   style={styles.input}
@@ -66,9 +64,16 @@ const LoginScreen = () => {
                   onPress={keyBoardHideBtn}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.buttonTitle}>Register</Text>
+                  <Text style={styles.buttonTitle}>Login</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Don't have an account? Register</Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Register')}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.text}>
+                    Don't have an account? <Text style={styles.textRegister}>Register</Text>
+                  </Text>
+                </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
           </View>
@@ -86,8 +91,9 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'cover',
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'flex-end',
+    paddingTop: 260,
   },
   containerForm: {
     alignItems: 'center',
@@ -99,7 +105,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     marginBottom: 0,
     paddingBottom: 20,
-    width: 375,
+    minWidth: 375,
+    minHeight: 450,
   },
   photo: {
     borderRadius: 16,
@@ -143,10 +150,10 @@ const styles = StyleSheet.create({
   inputPasswordShow: {
     position: 'absolute',
     right: 32,
-    top: 272,
+    top: 210,
     color: '#1B4371',
     fontFamily: 'Roboto',
-    fontWeight: 400,
+    fontWeight: '400',
     fontSize: 16,
   },
   button: {
@@ -177,13 +184,17 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 16,
     color: '#1B4371',
-    fontWeight: 400,
+    fontWeight: '400',
     fontSize: 16,
     fontFamily: 'Roboto',
     lineHeight: 19,
   },
+  textRegister: {
+    color: 'red',
+    fontWeight: '600',
+  },
   formTitle: {
-    fontWeight: 500,
+    fontWeight: '500',
     fontSize: 30,
     lineHeight: 35,
     marginTop: 32,
