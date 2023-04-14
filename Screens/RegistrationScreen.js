@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'cover',
-    // alignItems: 'center',
+    alignItems: 'center',
     justifyContent: 'flex-end',
     paddingTop: 260,
   },
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingBottom: 20,
-    minWidth: 375,
-    minHeight: 575,
+    width: 375,
+    height: 575,
   },
   photo: {
     borderRadius: 16,

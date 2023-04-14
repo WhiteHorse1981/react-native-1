@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'cover',
-    // alignItems: 'center',
+    alignItems: 'center',
     justifyContent: 'flex-end',
     paddingTop: 260,
   },
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     marginBottom: 0,
     paddingBottom: 20,
-    minWidth: 375,
-    minHeight: 450,
+    width: 375,
+    height: 420,
   },
   photo: {
     borderRadius: 16,
