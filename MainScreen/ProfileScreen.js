@@ -1,19 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-const MapScreen = () => {
+const ProfileScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>MapScreen</Text>
+      <Text>ProfileScreen</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 30,
   },
 });
-
-export default MapScreen;
+export default ProfileScreen;

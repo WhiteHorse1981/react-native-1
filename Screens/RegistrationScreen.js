@@ -36,7 +36,19 @@ const RegistrationScreen = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScrollView style={styles.container}>
         <ImageBackground style={styles.image} source={require('../assets/images/PhotoBCG.jpg')}>
-          <View style={{ ...styles.form, marginBottom: isShowKeyBoard ? 0 : 0 }}>
+          <View
+            style={{
+              ...Platform.select({
+                ios: {
+                  ...styles.form,
+                  marginBottom: isShowKeyBoard ? 140 : 0,
+                },
+                android: {
+                  ...styles.form,
+                },
+              }),
+            }}
+          >
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
               <View style={styles.containerForm}>
                 <View style={styles.photo}>
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 16,
     backgroundColor: '#F6F6F6',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     borderColor: '#E8E8E8',
@@ -150,7 +162,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 16,
     backgroundColor: '#F6F6F6',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     position: 'relative',
@@ -161,7 +173,7 @@ const styles = StyleSheet.create({
     right: 32,
     top: 354,
     color: '#1B4371',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
   },
@@ -171,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     justifyContent: 'center',
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     marginTop: 43,
@@ -195,7 +207,7 @@ const styles = StyleSheet.create({
     color: '#1B4371',
     fontWeight: '400',
     fontSize: 16,
-    fontFamily: 'Roboto',
+    // fontFamily: 'Roboto-Regular',
     lineHeight: 19,
   },
   textLogin: {
@@ -203,6 +215,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   formTitle: {
+    // fontFamily: 'Roboto-Medium',
     fontWeight: '500',
     fontSize: 30,
     lineHeight: 35,
