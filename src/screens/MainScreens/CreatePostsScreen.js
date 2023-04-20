@@ -44,14 +44,10 @@ const CreatePostsScreen = ({ navigation }) => {
 
     getLocation();
 
-    setIsShowKeyBoard(false);
-    Keyboard.dismiss();
-
-    if (title.trim() || place.trim()) {
+    if (title.trim() && place.trim()) {
+      navigation.navigate('Home', { photo, title, location, place });
       setTitle('');
       setPlace('');
-      console.log('navigation', navigation);
-      navigation.navigate('Home', { photo, title, location, place });
     } else {
       Alert.alert('Please fill in the fields');
     }

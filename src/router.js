@@ -4,11 +4,11 @@ import { Image, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import RegistrationScreen from './Screens/RegistrationScreen';
-import LoginScreen from './Screens/LoginScreen';
-import PostsScreen from './MainScreen/PostsScreen';
-import CreatePostsScreen from './MainScreen/CreatePostsScreen';
-import ProfileScreen from './MainScreen/ProfileScreen';
+import RegistrationScreen from './screens/auth/RegistrationScreen';
+import LoginScreen from './screens/auth/LoginScreen';
+import PostsScreen from './screens/MainScreens/PostsScreen';
+import CreatePostsScreen from './screens/MainScreens/CreatePostsScreen';
+import ProfileScreen from './screens/MainScreens/ProfileScreen';
 
 // icons import
 import { AntDesign, Ionicons, Feather } from '@expo/vector-icons';

@@ -38,11 +38,7 @@ export default function Home({ route, navigation }) {
               <View>
                 <TouchableOpacity
                   style={{ display: 'flex', flexDirection: 'row' }}
-                  onPress={() =>
-                    navigation.navigate('Map', {
-                      location: item.location,
-                    })
-                  }
+                  onPress={() => navigation.navigate('Map', { location: item.location })}
                 >
                   <Feather name="map-pin" size={24} color="#BDBDBD" />
                   <Text style={styles.place}> {item.place}</Text>

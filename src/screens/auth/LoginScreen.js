@@ -8,19 +8,17 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Image,
   TouchableWithoutFeedback,
   ImageBackground,
   ScrollView,
 } from 'react-native';
 
 initialState = {
-  login: '',
   email: '',
   password: '',
 };
 
-const RegistrationScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState(false);
@@ -34,34 +32,12 @@ const RegistrationScreen = ({ navigation }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView style={styles.container}>
-        <ImageBackground style={styles.image} source={require('../assets/images/PhotoBCG.jpg')}>
-          <View
-            style={{
-              ...Platform.select({
-                ios: {
-                  ...styles.form,
-                  marginBottom: isShowKeyBoard ? 140 : 0,
-                },
-                android: {
-                  ...styles.form,
-                },
-              }),
-            }}
-          >
+      <View style={styles.container}>
+        <ImageBackground style={styles.image} source={require('../../assets/images/PhotoBCG.jpg')}>
+          <View style={{ ...styles.form, marginBottom: isShowKeyBoard ? 0 : 0 }}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
               <View style={styles.containerForm}>
-                <View style={styles.photo}>
-                  <Image style={styles.photoAdd} source={require('../assets/images/add.png')} />
-                </View>
-                <Text style={styles.formTitle}>Registration</Text>
-                <TextInput
-                  onFocus={() => setIsShowKeyBoard(true)}
-                  style={styles.input}
-                  value={state.login}
-                  placeholder="Login"
-                  onChangeText={value => setState(prevState => ({ ...prevState, login: value }))}
-                />
+                <Text style={styles.formTitle}>Login</Text>
                 <TextInput
                   onFocus={() => setIsShowKeyBoard(true)}
                   style={styles.input}
@@ -88,18 +64,21 @@ const RegistrationScreen = ({ navigation }) => {
                   onPress={keyBoardHideBtn}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.buttonTitle}>Register</Text>
+                  <Text style={styles.buttonTitle}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.7}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Register')}
+                  activeOpacity={0.7}
+                >
                   <Text style={styles.text}>
-                    Already have an account? <Text style={styles.textLogin}>Login</Text>
+                    Don't have an account? <Text style={styles.textRegister}>Register</Text>
                   </Text>
                 </TouchableOpacity>
               </View>
             </KeyboardAvoidingView>
           </View>
         </ImageBackground>
-      </ScrollView>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -124,9 +103,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    marginBottom: 0,
     paddingBottom: 20,
     width: 375,
-    height: 575,
+    height: 420,
   },
   photo: {
     borderRadius: 16,
@@ -134,7 +114,6 @@ const styles = StyleSheet.create({
     height: 120,
     backgroundColor: '#F6F6F6',
     marginTop: -60,
-    position: 'relative',
   },
   photoAdd: {
     position: 'absolute',
@@ -171,7 +150,7 @@ const styles = StyleSheet.create({
   inputPasswordShow: {
     position: 'absolute',
     right: 32,
-    top: 354,
+    top: 210,
     color: '#1B4371',
     // fontFamily: 'Roboto-Regular',
     fontWeight: '400',
@@ -210,7 +189,7 @@ const styles = StyleSheet.create({
     // fontFamily: 'Roboto-Regular',
     lineHeight: 19,
   },
-  textLogin: {
+  textRegister: {
     color: 'red',
     fontWeight: '600',
   },
@@ -224,4 +203,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegistrationScreen;
+export default LoginScreen;

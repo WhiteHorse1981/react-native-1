@@ -29,7 +29,7 @@ export default function PostsScreen() {
               activeOpacity={0.7}
               // onPress={logOut}
             >
-              <Image source={require('../assets/images/log-out.png')} />
+              <Image source={require('../../assets/images/log-out.png')} />
             </TouchableOpacity>
           ),
         }}
