@@ -4,22 +4,23 @@ import MapView, { Marker } from 'react-native-maps';
 
 const MapScreen = ({ route }) => {
   console.log('route.params.location', route.params.location);
+  const { latitude, longitude } = route.params.location;
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: route.params?.location?.coords?.latitude,
-          longitude: route.params?.location?.coords?.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitude,
+          longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.006,
         }}
       >
         <Marker
           coordinate={{
-            latitude: route.params?.location?.coords?.latitude,
-            longitude: route.params?.location?.coords?.longitude,
+            latitude,
+            longitude,
           }}
         />
       </MapView>
@@ -30,7 +31,6 @@ const MapScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
   map: {
     width: '100%',

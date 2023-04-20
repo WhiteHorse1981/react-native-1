@@ -45,7 +45,7 @@ const CreatePostsScreen = ({ navigation }) => {
     getLocation();
 
     if (title.trim() && place.trim()) {
-      navigation.navigate('Home', { photo, title, location, place });
+      navigation.navigate('Home', { photo, title, location: location?.coords, place });
       setTitle('');
       setPlace('');
     } else {
