@@ -1,8 +1,12 @@
-import { NavigationContainer } from '@react-navigation/native';
+import * as React from 'react';
+import { Provider } from 'react-redux';
+
 // import React, { useCallback } from 'react';
 // import { useFonts } from 'expo-font';
 // import * as SplashScreen from 'expo-splash-screen';
-import useRoute from './router';
+
+import { store } from './redux/store';
+import Main from './components/Main';
 
 // SplashScreen.preventAutoHideAsync();
 
@@ -22,6 +26,10 @@ export default function App() {
   // if (!fontsLoaded) {
   //   return null;
   // }
-  const routing = useRoute(true);
-  return <NavigationContainer>{routing}</NavigationContainer>;
+
+  return (
+    <Provider store={store}>
+      <Main />
+    </Provider>
+  );
 }
