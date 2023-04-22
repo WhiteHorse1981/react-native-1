@@ -13,6 +13,9 @@ import {
   ScrollView,
 } from 'react-native';
 
+import { useDispatch } from 'react-redux';
+import { authLoginUser } from '../../redux/auth/authOperations';
+
 initialState = {
   email: '',
   password: '',
@@ -23,11 +26,13 @@ const LoginScreen = ({ navigation }) => {
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState(false);
 
-  const keyBoardHideBtn = () => {
-    navigation.navigate('Home');
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
     console.log(state);
+    dispatch(authLoginUser(state));
     setState(initialState);
   };
   return (
@@ -59,11 +64,7 @@ const LoginScreen = ({ navigation }) => {
                 >
                   {visiblePassword ? 'Hide' : 'Show'}
                 </Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={keyBoardHideBtn}
-                  activeOpacity={0.8}
-                >
+                <TouchableOpacity style={styles.button} onPress={handleSubmit} activeOpacity={0.8}>
                   <Text style={styles.buttonTitle}>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

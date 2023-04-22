@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AntDesign } from '@expo/vector-icons';
 import {
   StyleSheet,
   Text,
@@ -14,22 +15,36 @@ import {
   ScrollView,
 } from 'react-native';
 
+import { Camera, CameraType } from 'expo-camera';
+import { useDispatch } from 'react-redux';
+import { authRegisterUser } from '../../redux/auth/authOperations';
+
 initialState = {
   login: '',
   email: '',
   password: '',
+  photo: '',
 };
 
 const RegistrationScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [visiblePassword, setVisiblePassword] = useState(false);
+  const [camera, setCamera] = useState(null);
 
-  const keyBoardHideBtn = () => {
-    navigation.navigate('Home');
+  const dispatch = useDispatch();
+
+  const takePhoto = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    const photo = await camera.takePictureAsync();
+    setState(prev => ({ ...prev, photo: photo.uri }));
+  };
+
+  const handleSubmit = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
     console.log(state);
+    dispatch(authRegisterUser(state));
     setState(initialState);
   };
   return (
@@ -41,7 +56,7 @@ const RegistrationScreen = ({ navigation }) => {
               ...Platform.select({
                 ios: {
                   ...styles.form,
-                  marginBottom: isShowKeyBoard ? 0 : 140,
+                  marginBottom: isShowKeyBoard ? 0 : 120,
                 },
                 android: {
                   ...styles.form,
@@ -49,11 +64,53 @@ const RegistrationScreen = ({ navigation }) => {
               }),
             }}
           >
+            <View style={styles.cameraContainer}>
+              <Camera style={styles.camera} ref={setCamera} type={CameraType.front}>
+                {state.photo && (
+                  <>
+                    <View style={styles.takePhotoContainer}>
+                      <Image source={{ uri: state.photo }} style={styles.photo} />
+                    </View>
+                  </>
+                )}
+              </Camera>
+            </View>
+            {state.photo ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setState(prev => ({ ...prev, photo: '' }));
+                }}
+                style={{
+                  position: 'absolute',
+                  bottom: 510,
+                  right: 136,
+                  width: 24,
+                  height: 24,
+                  backgroundColor: '#ffffff',
+                  borderRadius: 50,
+                  borderWidth: 1,
+                  borderColor: '#E8E8E8',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <AntDesign style={styles.photoAdd} name="close" size={20} color="#BDBDBD" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  bottom: 510,
+                  right: 136,
+                }}
+                onPress={takePhoto}
+              >
+                <AntDesign style={styles.photoAdd} name="pluscircleo" size={25} color="#FF6C00" />
+              </TouchableOpacity>
+            )}
+
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
               <View style={styles.containerForm}>
-                <View style={styles.photo}>
-                  <Image style={styles.photoAdd} source={require('../../assets/images/add.png')} />
-                </View>
                 <Text style={styles.formTitle}>Registration</Text>
                 <TextInput
                   onFocus={() => setIsShowKeyBoard(true)}
@@ -83,11 +140,7 @@ const RegistrationScreen = ({ navigation }) => {
                 >
                   {visiblePassword ? 'Hide' : 'Show'}
                 </Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={keyBoardHideBtn}
-                  activeOpacity={0.8}
-                >
+                <TouchableOpacity style={styles.button} onPress={handleSubmit} activeOpacity={0.8}>
                   <Text style={styles.buttonTitle}>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.7}>
@@ -128,18 +181,32 @@ const styles = StyleSheet.create({
     width: 375,
     height: 575,
   },
-  photo: {
-    borderRadius: 16,
+  cameraContainer: {
+    position: 'absolute',
+    top: -90,
+    left: '35%',
     width: 120,
     height: 120,
     backgroundColor: '#F6F6F6',
-    marginTop: -60,
-    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: 8,
+  },
+  takePhotoContainer: {
+    position: 'absolute',
+  },
+  camera: {
+    width: 120,
+    height: 120,
+  },
+  photo: {
+    width: 120,
+    height: 120,
+    borderRadius: 8,
   },
   photoAdd: {
     position: 'absolute',
-    right: -12,
-    bottom: 15,
+    right: -20,
+    bottom: 45,
   },
   input: {
     height: 50,

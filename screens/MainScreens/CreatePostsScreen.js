@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Text,
   View,
@@ -14,6 +15,8 @@ import {
 import { Camera, CameraType } from 'expo-camera';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import db from '../../fierbase/config';
+import { nanoid } from 'nanoid';
 
 const CreatePostsScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -22,7 +25,8 @@ const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState(null);
   const [place, setPlace] = useState('');
-  const [errorMsg, setErrorMsg] = useState(null);
+
+  const { userId, login } = useSelector(state => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -44,12 +48,39 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const sendData = () => {
     if (title.trim() && place.trim()) {
-      navigation.navigate('Home', { photo, title, location: location?.coords, place });
+      uploadPostToServer();
+      navigation.navigate('Home');
+      setPhoto('');
       setTitle('');
       setPlace('');
     } else {
       Alert.alert('Please fill in the fields');
     }
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    const createPost = await db.firestore().collection('posts').add({
+      photo,
+      title,
+      location: location.coords,
+      place,
+      userId,
+      login,
+    });
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+
+    const uniquePostId = nanoid();
+
+    await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+
+    const processedPhoto = await db.storage().ref('postImage').child(uniquePostId).getDownloadURL();
+
+    return processedPhoto;
   };
 
   return (

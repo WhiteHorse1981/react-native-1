@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 
+import db from '../../firebase/config';
 import { Feather } from '@expo/vector-icons';
 
 export default function Home({ route, navigation }) {
   const [posts, setPosts] = useState([]);
+  const { email, photo, login } = useSelector(state => state.auth);
   console.log('route.params', route.params);
 
+  const getAllPosts = async () => {
+    await db
+      .firestore()
+      .collection('posts')
+      .onSnapshot(data => setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+  };
+
   useEffect(() => {
-    if (route.params) {
-      setPosts(prevState => [...prevState, route.params]);
-    }
-  }, [route.params]);
-  console.log('posts', posts);
+    getAllPosts();
+  }, []);
 
   return (
     <View style={styles.container}>
