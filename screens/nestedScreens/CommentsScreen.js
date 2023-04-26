@@ -12,7 +12,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import db from '../../fierbase/config';
+import db from '../../firebase/config';
 import { AntDesign } from '@expo/vector-icons';
 
 const CommentsScreen = ({ route }) => {
@@ -26,17 +26,25 @@ const CommentsScreen = ({ route }) => {
   }, []);
 
   const createComment = async () => {
-    db.firestore().collection('posts').doc(postId).collection('comments').add({ comment, photo });
+    try {
+      db.firestore().collection('posts').doc(postId).collection('comments').add({ comment, photo });
 
-    setComment('');
+      setComment('');
+    } catch (error) {
+      console.log('error.message', error.message);
+    }
   };
 
   const getAllComments = async () => {
-    db.firestore()
-      .collection('posts')
-      .doc(postId)
-      .collection('comments')
-      .onSnapshot(data => setAllComments(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+    try {
+      db.firestore()
+        .collection('posts')
+        .doc(postId)
+        .collection('comments')
+        .onSnapshot(data => setAllComments(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+    } catch (error) {
+      console.log('error.message', error.message);
+    }
   };
 
   return (
@@ -111,13 +119,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF6C00',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: '50%',
+    borderRadius: 50,
   },
   list: {
     marginBottom: 32,
   },
   boxComment: {
-    display: 'flex',
     flexDirection: 'row',
     marginHorizontal: 16,
     marginTop: 24,
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 28,
     height: 28,
-    borderRadius: '50%',
+    borderRadius: 50,
   },
   boxText: {
     paddingHorizontal: 16,

@@ -8,13 +8,13 @@ const Main = () => {
   const { stateChange } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [input])(() => {
+  useEffect(() => {
     dispatch(authStateChangeUser());
   }, []);
 
   const routing = useRoute(stateChange);
 
-  return <NavigationContainer onLayout={onLayout}>{routing}</NavigationContainer>;
+  return <NavigationContainer>{routing}</NavigationContainer>;
 };
 
 export default Main;

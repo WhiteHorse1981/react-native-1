@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+// import { registerRootComponent } from 'expo';
 
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
@@ -6,6 +7,8 @@ import { store } from './redux/store';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import Main from './components/Main';
+
+// registerRootComponent(App);
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -26,7 +29,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <Main onLayout={onLayoutRootView} />
+      <Main />
     </Provider>
   );
 }

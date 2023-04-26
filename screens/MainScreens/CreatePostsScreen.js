@@ -12,10 +12,11 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
+
 import { Camera, CameraType } from 'expo-camera';
 import { FontAwesome, Feather } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import db from '../../fierbase/config';
+import db from '../../firebase/config';
 import { nanoid } from 'nanoid';
 
 const CreatePostsScreen = ({ navigation }) => {
@@ -25,6 +26,8 @@ const CreatePostsScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState(null);
   const [place, setPlace] = useState('');
+
+  console.log('location', location);
 
   const { userId, login } = useSelector(state => state.auth);
 
@@ -38,17 +41,57 @@ const CreatePostsScreen = ({ navigation }) => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      console.log('locationuseEffect', location);
     })();
   }, []);
 
   const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    setPhoto(photo.uri);
+    console.log('locationtakePhoto', location);
+    const { uri } = await camera.takePictureAsync();
+    setPhoto(uri);
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photo = await uploadPhotoToServer();
+      const createPost = await db.firestore().collection('posts').add({
+        photo,
+        title,
+        location,
+        // location: location?.coords,
+        place,
+        userId,
+        login,
+      });
+    } catch (error) {
+      console.log('error', error.message);
+    }
+  };
+
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+      const file = await response.blob();
+
+      const uniquePostId = nanoid();
+
+      await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+
+      const processedPhoto = await db
+        .storage()
+        .ref('postImage')
+        .child(uniquePostId)
+        .getDownloadURL();
+
+      return processedPhoto;
+    } catch (error) {
+      console.log('error', error.message);
+    }
   };
 
   const sendData = () => {
+    uploadPostToServer();
     if (title.trim() && place.trim()) {
-      uploadPostToServer();
       navigation.navigate('Home');
       setPhoto('');
       setTitle('');
@@ -56,31 +99,6 @@ const CreatePostsScreen = ({ navigation }) => {
     } else {
       Alert.alert('Please fill in the fields');
     }
-  };
-
-  const uploadPostToServer = async () => {
-    const photo = await uploadPhotoToServer();
-    const createPost = await db.firestore().collection('posts').add({
-      photo,
-      title,
-      location: location.coords,
-      place,
-      userId,
-      login,
-    });
-  };
-
-  const uploadPhotoToServer = async () => {
-    const response = await fetch(photo);
-    const file = await response.blob();
-
-    const uniquePostId = nanoid();
-
-    await db.storage().ref(`postImage/${uniquePostId}`).put(file);
-
-    const processedPhoto = await db.storage().ref('postImage').child(uniquePostId).getDownloadURL();
-
-    return processedPhoto;
   };
 
   return (

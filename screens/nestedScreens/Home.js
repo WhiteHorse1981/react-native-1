@@ -5,16 +5,20 @@ import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react
 import db from '../../firebase/config';
 import { Feather } from '@expo/vector-icons';
 
-export default function Home({ route, navigation }) {
+const Home = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   const { email, photo, login } = useSelector(state => state.auth);
   console.log('route.params', route.params);
 
   const getAllPosts = async () => {
-    await db
-      .firestore()
-      .collection('posts')
-      .onSnapshot(data => setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+    try {
+      await db
+        .firestore()
+        .collection('posts')
+        .onSnapshot(data => setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+    } catch (error) {
+      console.log('error', error.message);
+    }
   };
 
   useEffect(() => {
@@ -37,14 +41,16 @@ export default function Home({ route, navigation }) {
             <View style={styles.wraper}>
               <TouchableOpacity
                 style={styles.comments}
-                onPress={() => navigation.navigate('Comments')}
+                onPress={() =>
+                  navigation.navigate('Comments', { postId: item.id, photo: item.photo })
+                }
               >
                 <Feather name="message-circle" size={24} color="#BDBDBD" />
                 <Text style={styles.commentsCount}>0</Text>
               </TouchableOpacity>
               <View>
                 <TouchableOpacity
-                  style={{ display: 'flex', flexDirection: 'row' }}
+                  style={{ flexDirection: 'row' }}
                   onPress={() => navigation.navigate('Map', { location: item.location })}
                 >
                   <Feather name="map-pin" size={24} color="#BDBDBD" />
@@ -57,7 +63,8 @@ export default function Home({ route, navigation }) {
       />
     </View>
   );
-}
+};
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
@@ -73,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   title: {
-    // fontFamily: 'Roboto-Medium',
     fontSize: 16,
     lineHeight: 19,
     color: '#212121',
@@ -83,14 +89,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   wraper: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginHorizontal: 16,
     marginTop: 10,
   },
   comments: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 50,

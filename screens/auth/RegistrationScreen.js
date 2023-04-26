@@ -67,11 +67,9 @@ const RegistrationScreen = ({ navigation }) => {
             <View style={styles.cameraContainer}>
               <Camera style={styles.camera} ref={setCamera} type={CameraType.front}>
                 {state.photo && (
-                  <>
-                    <View style={styles.takePhotoContainer}>
-                      <Image source={{ uri: state.photo }} style={styles.photo} />
-                    </View>
-                  </>
+                  <View style={styles.takePhotoContainer}>
+                    <Image source={{ uri: state.photo }} style={styles.photo} />
+                  </View>
                 )}
               </Camera>
             </View>

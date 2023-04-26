@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import db from '../../fierbase/config';
+import db from '../../firebase/config';
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -20,26 +20,33 @@ const ProfileScreen = ({ navigation }) => {
   const { userId, photo, login } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const getUsersPost = async () => {
-    await db
-      .firestore()
-      .collection('posts')
-      .where('userId', '==', userId)
-      .onSnapshot(data => setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+    try {
+      await db
+        .firestore()
+        .collection('posts')
+        .where('userId', '==', userId)
+        .onSnapshot(data => setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))));
+    } catch (error) {
+      console.log('error.message', error.message);
+    }
   };
 
   useEffect(() => {
     getUsersPost();
   }, []);
 
-  const signOut = () => {
-    dispatch(authLogOutUser());
-  };
+  // const signOut = () => {
+  //   dispatch(authLogOutUser());
+  // };
 
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../../assets/images/PhotoBCG.jpg')} style={styles.image}>
         <View style={styles.box}>
-          <TouchableOpacity style={styles.out} onPress={signOut}>
+          <TouchableOpacity
+            style={styles.out}
+            // onPress={signOut}
+          >
             <Feather name="log-out" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           <View
@@ -62,7 +69,7 @@ const ProfileScreen = ({ navigation }) => {
                   <Text style={styles.title}>{item.title.value}</Text>
                 </View>
                 <View style={styles.wraper}>
-                  <View style={{ display: 'flex', flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity
                       style={styles.comments}
                       onPress={() =>
@@ -77,12 +84,12 @@ const ProfileScreen = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={{ ...styles.comments, marginLeft: 24 }}
-                      // onPress={() =>
-                      //   navigation.navigate('Comments', {
-                      //     postId: item.id,
-                      //     photo: item.photo,
-                      //   })
-                      // }
+                      onPress={() =>
+                        navigation.navigate('Comments', {
+                          postId: item.id,
+                          photo: item.photo,
+                        })
+                      }
                     >
                       <AntDesign name="like2" size={24} color="#FF6C00" />
                       <Text style={styles.commentsCount}>0</Text>
@@ -90,7 +97,7 @@ const ProfileScreen = ({ navigation }) => {
                   </View>
                   <View>
                     <TouchableOpacity
-                      style={{ display: 'flex', flexDirection: 'row' }}
+                      style={{ flexDirection: 'row' }}
                       onPress={() =>
                         navigation.navigate('Map', {
                           location: item.location,
@@ -98,7 +105,7 @@ const ProfileScreen = ({ navigation }) => {
                       }
                     >
                       <Feather name="map-pin" size={24} color="#BDBDBD" />
-                      <Text style={styles.place}>{item.place.value}</Text>
+                      <Text style={styles.place}>{item.place}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -110,6 +117,8 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   );
 };
+
+export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -158,13 +167,11 @@ const styles = StyleSheet.create({
     color: '#212121',
   },
   wraper: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 16,
   },
   comments: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -190,4 +197,3 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
 });
-export default ProfileScreen;

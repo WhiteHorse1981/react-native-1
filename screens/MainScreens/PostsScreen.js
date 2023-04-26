@@ -5,10 +5,11 @@ import { TouchableOpacity, Image } from 'react-native';
 import Home from '../nestedScreens/Home';
 import CommentsScreen from '../nestedScreens/CommentsScreen';
 import MapScreen from '../nestedScreens/MapScreen';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
 const NestedScreen = createStackNavigator();
 
-export default function PostsScreen() {
+export default function PostsScreen({ navigation }) {
   return (
     <NestedScreen.Navigator>
       <NestedScreen.Screen
@@ -18,49 +19,58 @@ export default function PostsScreen() {
           title: 'Posts',
           headerTitleStyle: {
             color: '#212121',
-            // fontFamily: 'Roboto-Medium',
+            fontFamily: 'Roboto-Medium',
             fontSize: 17,
             lineHeight: 22,
+            letterSpacing: -0.408,
+            background: '#FFFFFF',
           },
           headerTitleAlign: 'center',
           headerRight: () => (
             <TouchableOpacity
-              style={{ marginRight: 15, marginTop: 5 }}
-              activeOpacity={0.7}
-              // onPress={logOut}
+              style={{ marginRight: 16 }}
+              // onPress={signOut}
             >
-              <Image source={require('../../assets/images/log-out.png')} />
+              <Feather name="log-out" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
         }}
       />
-      <NestedScreen.Screen name="Comments" component={CommentsScreen} />
       <NestedScreen.Screen
+        name="Comments"
+        component={CommentsScreen}
         options={{
-          title: 'Map',
-          headerTitleStyle: {
-            color: '#212121',
-            // fontFamily: 'Roboto-Medium',
-            fontSize: 17,
-            lineHeight: 22,
-          },
+          title: 'Comments',
           headerTitleAlign: 'center',
-          // headerLeft: () => {
-          //   return (
-          //     <>
-          //       <TouchableOpacity
-          //         style={{ marginLeft: 16 }}
-          //         // onPress={() => navigation.navigate('Posts')}
-          //         activeOpacity={0.7}
-          //       >
-          //         <Image source={require('../assets/images/arrow-left.png')} />
-          //       </TouchableOpacity>
-          //     </>
-          //   );
-          // },
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{ marginLeft: 16 }}
+              onPress={() => {
+                navigation.navigate('Home');
+              }}
+            >
+              <AntDesign name="arrowleft" size={24} color="rgba(33, 33, 33, 0.8)" />
+            </TouchableOpacity>
+          ),
         }}
+      />
+      <NestedScreen.Screen
         name="Map"
         component={MapScreen}
+        options={{
+          title: 'Location',
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{ marginLeft: 16 }}
+              onPress={() => {
+                navigation.navigate('Home');
+              }}
+            >
+              <AntDesign name="arrowleft" size={24} color="rgba(33, 33, 33, 0.8)" />
+            </TouchableOpacity>
+          ),
+        }}
       />
     </NestedScreen.Navigator>
   );
