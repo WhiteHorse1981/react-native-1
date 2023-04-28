@@ -27,6 +27,13 @@ const Home = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.info}>
+        <Image source={{ uri: photo }} style={styles.avatar} />
+        <View style={styles.nameEmail}>
+          <Text style={styles.login}>{login}</Text>
+          <Text style={styles.email}>{email}</Text>
+        </View>
+      </View>
       <FlatList
         data={posts}
         keyExtractor={(item, index) => index.toString()}
@@ -72,6 +79,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ffffff',
   },
+  info: {
+    flexDirection: 'row',
+    marginLeft: 16,
+    marginTop: 32,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  login: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 13,
+    lineHeight: 15,
+    color: '#212121 ',
+  },
+  email: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 11,
+    lineHeight: 13,
+    color: 'rgba(33, 33, 33, 0.8)  ',
+  },
   img: {
     marginHorizontal: 16,
     height: 240,
@@ -101,13 +133,11 @@ const styles = StyleSheet.create({
   },
   commentsCount: {
     marginLeft: 8,
-    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     color: '#BDBDBD',
   },
   place: {
-    // fontFamily: 'Roboto-Regular',
     marginLeft: 8,
     fontSize: 16,
     lineHeight: 19,

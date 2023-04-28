@@ -35,18 +35,15 @@ const ProfileScreen = ({ navigation }) => {
     getUsersPost();
   }, []);
 
-  // const signOut = () => {
-  //   dispatch(authLogOutUser());
-  // };
+  const signOut = () => {
+    dispatch(authLogOutUser());
+  };
 
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../../assets/images/PhotoBCG.jpg')} style={styles.image}>
         <View style={styles.box}>
-          <TouchableOpacity
-            style={styles.out}
-            // onPress={signOut}
-          >
+          <TouchableOpacity style={styles.out} onPress={signOut}>
             <Feather name="log-out" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           <View

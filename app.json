@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "React Native",
+    "name": "React Native 1",
     "slug": "react-native-1",
     "privacy": "public",
     "description": "Travel photography app",
@@ -18,13 +18,10 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "jsEngine": "hermes",
     "ios": {
-      "jsEngine": "jsc",
       "supportsTablet": true
     },
     "android": {
-      "jsEngine": "jsc",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

@@ -21,14 +21,14 @@ import { authRegisterUser } from '../../redux/auth/authOperations';
 
 initialState = {
   login: '',
-  email: '',
+  mail: '',
   password: '',
   photo: '',
 };
 
 const RegistrationScreen = ({ navigation }) => {
-  const [state, setState] = useState(initialState);
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
+  const [state, setState] = useState(initialState);
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [camera, setCamera] = useState(null);
 
@@ -43,7 +43,6 @@ const RegistrationScreen = ({ navigation }) => {
   const handleSubmit = () => {
     setIsShowKeyBoard(false);
     Keyboard.dismiss();
-    console.log(state);
     dispatch(authRegisterUser(state));
     setState(initialState);
   };
@@ -67,9 +66,11 @@ const RegistrationScreen = ({ navigation }) => {
             <View style={styles.cameraContainer}>
               <Camera style={styles.camera} ref={setCamera} type={CameraType.front}>
                 {state.photo && (
-                  <View style={styles.takePhotoContainer}>
-                    <Image source={{ uri: state.photo }} style={styles.photo} />
-                  </View>
+                  <>
+                    <View style={styles.takePhotoContainer}>
+                      <Image source={{ uri: state.photo }} style={styles.photo} />
+                    </View>
+                  </>
                 )}
               </Camera>
             </View>
@@ -214,7 +215,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 16,
     backgroundColor: '#F6F6F6',
-    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     borderColor: '#E8E8E8',
@@ -227,7 +227,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 16,
     backgroundColor: '#F6F6F6',
-    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     position: 'relative',
@@ -236,9 +235,8 @@ const styles = StyleSheet.create({
   inputPasswordShow: {
     position: 'absolute',
     right: 32,
-    top: 354,
+    top: 290,
     color: '#1B4371',
-    // fontFamily: 'Roboto-Regular',
     fontWeight: '400',
     fontSize: 16,
   },
@@ -248,7 +246,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     justifyContent: 'center',
-    // fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 19,
     marginTop: 43,
